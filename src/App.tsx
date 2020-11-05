@@ -13,12 +13,12 @@ import Container from '@material-ui/core/Container';
 import Paper from '@material-ui/core/Paper';
 import Grid from '@material-ui/core/Grid';
 
-export type FilterValusType = "all" | "completed" | "active";
+export type FilterValuesType = "all" | "completed" | "active";
 
-type TodolistType = {
+export type TodolistType = {
     id: string
     title: string
-    filter:FilterValusType
+    filter:FilterValuesType
 }
 type TaskobjType = {
     [key: string]: Array<TasksType>
@@ -80,7 +80,7 @@ function App() {
         setTaskobjs ({...taskobjs})
     }
 
-    function changeFilter (value: FilterValusType, TodolistID:string) {
+    function changeFilter (value: FilterValuesType, TodolistID:string) {
         let todolist = todolists.find(tl=> tl.id === TodolistID)
         if (todolist) {
             todolist.filter = value;
@@ -94,7 +94,6 @@ function App() {
         setTaskobjs({...taskobjs})
     }
     function changeTodolist (todolistID: string, newTitle: string) {
-        debugger
         let todolist = todolists.find(tl=> tl.id === todolistID)
         if (todolist) {
             todolist.title = newTitle
