@@ -12,6 +12,7 @@ import MenuIcon from '@material-ui/icons/Menu';
 import Container from '@material-ui/core/Container';
 import Paper from '@material-ui/core/Paper';
 import Grid from '@material-ui/core/Grid';
+import PaperBackground from "./images/3.jpg";
 
 export type FilterValuesType = "all" | "completed" | "active";
 
@@ -135,7 +136,8 @@ function App() {
                     }
                     return <Grid item >
                         <Paper elevation={3} style={{padding: "15px",
-                                                     backgroundImage: "url(https://images.pexels.com/photos/5725894/pexels-photo-5725894.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940)",
+                                                     backgroundImage: `url(${PaperBackground})`,
+                                                    //   "url(https://images.pexels.com/photos/5725894/pexels-photo-5725894.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940)",
                                                      backgroundSize: "100% auto"}}>
                             <TodoList title={tl.title}
                                 id={tl.id}

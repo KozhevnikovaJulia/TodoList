@@ -1,7 +1,7 @@
 import React, {ChangeEvent, KeyboardEvent, useState} from "react";
 import { AddItemForm } from "./AddItemForm";
 import { EditableSpan } from "./EditableSpan";
-import { FilterValusType } from "./App";
+import { FilterValuesType } from "./App";
 import IconButton from '@material-ui/core/IconButton';
 import DeleteIcon from '@material-ui/icons/Delete';
 import Button from "@material-ui/core/Button";
@@ -12,11 +12,11 @@ type TodoListPropsType = {
     title:string
     tasks:Array<TasksType>
     removeTask:(taskId:string, todolistID:string)=>void
-    changeFilter:(value: FilterValusType, todolistID:string)=>void
+    changeFilter:(value: FilterValuesType, todolistID:string)=>void
     addTask:(title:string, todolistID:string)=>void
     changeStatus:(taskID:string, isDone:boolean, todolistID:string)=> void
     changeTaskTitle:(taskID:string, newTitle:string, todolistID:string)=> void
-    filter:FilterValusType
+    filter:FilterValuesType
     removeTodolist: (todolistID:string)=> void
     changeTodolist: (todolistID:string, newTitle: string)=> void
 }

@@ -1,8 +1,8 @@
 .App {
-    background-image: url(https://images.pexels.com/photos/235994/pexels-photo-235994.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940);
+    background-image: url(https://images.pexels.com/photos/235994/pexels-photo-235994.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940); 
     /* url(https://images.pexels.com/photos/1260727/pexels-photo-1260727.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940); */
      /* url(https://images.pexels.com/photos/751378/pexels-photo-751378.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940); */
-     background-size: contain;
-    /* background-size: 100% auto; */
+     /* background-size: contain; */
+    background-size: 100% auto;
 
 }
