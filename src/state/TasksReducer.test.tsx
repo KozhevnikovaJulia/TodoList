@@ -2,7 +2,7 @@ import {tasksReducer, removeTaskAC, addTaskAC, changeTaskStatusAC, changeTaskTit
 import {addTodolistAC, removeTodolistAC } from './TodolistsReducer';
 import {TaskobjType} from './TasksReducer';
 
-let startState: TaskobjType ={}
+let startState: TaskobjType
 
 beforeEach(() => {
      startState = {
@@ -21,8 +21,7 @@ beforeEach(() => {
 
 
 test('correct task should be deleted from correct array', () => {
-   const action = removeTaskAC("todolistId2", "2");
-  
+   const action = removeTaskAC("2", "todolistId2");
    const endState = tasksReducer(startState, action)
 
   expect(endState).toEqual({
@@ -40,7 +39,7 @@ test('correct task should be deleted from correct array', () => {
 });
 
 test('correct task should be added to correct array', () => {
-    const action = addTaskAC("todolistId2", "juce")
+    const action = addTaskAC("juce", "todolistId2")
  
     const endState = tasksReducer(startState, action)
  
@@ -52,7 +51,7 @@ test('correct task should be added to correct array', () => {
  })
  
  test('status of specified task should be changed', () => {
-    const action = changeTaskStatusAC("todolistId2", "2", false);
+    const action = changeTaskStatusAC("2", false, "todolistId2");
  
     const endState = tasksReducer(startState, action)
  
@@ -61,7 +60,7 @@ test('correct task should be added to correct array', () => {
   });
  
   test('title of specified task should be changed', () => {
-    const action = changeTaskTitleAC ("todolistId2", "2", "water");
+    const action = changeTaskTitleAC ("2", "water", "todolistId2" );
    
     const endState = tasksReducer(startState, action)
  
@@ -79,7 +78,6 @@ test('correct task should be added to correct array', () => {
  });
  
  });
-
 
  test('new array should be added when new todolist is added', () => {
     const action = addTodolistAC("new todolist");

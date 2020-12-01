@@ -2,18 +2,19 @@ import React, {ChangeEvent, KeyboardEvent, useState} from "react";
 import Button from "@material-ui/core/Button";
 import TextField from '@material-ui/core/TextField';
 
- type AddItemPropsType = {
+ type AddItemPropsType = {    
     addItem:(title:string)=>void
 }
 
-export function AddItemForm (props:AddItemPropsType) {
+export const AddItemForm = React.memo( (props:AddItemPropsType) => {
+    console.log("AddItem")
     let [title, setTitle] = useState(" ")
     let [error, setError] = useState<boolean>(false)
 
     const addItemTitle = () => { if (title.trim() !== ""){ props.addItem(title); setTitle(" ") }
                                  else { setError(true) }}
     const onChangeHandler = (e: ChangeEvent<HTMLInputElement>) => { setTitle(e.currentTarget.value)};
-    const onKeyPressHandler = (e: KeyboardEvent<HTMLInputElement>) => { setError(false);
+    const onKeyPressHandler = (e: KeyboardEvent<HTMLInputElement>) => {if(error!==false) {setError(false)};
                                                                        if (e.key === "Enter") {addItemTitle()}};
    
     return (
@@ -25,4 +26,4 @@ export function AddItemForm (props:AddItemPropsType) {
         </div>
                 
     )
-}
+})
