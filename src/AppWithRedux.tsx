@@ -28,7 +28,7 @@ export type TodolistType = {
 type TaskobjType = {
     [key: string]: Array<TasksType>
 }
-function App() {
+ function App() {
     const todolists = useSelector<AppRootStateType, Array<TodolistType>>(state => state.todolists)
     const tasks  = useSelector<AppRootStateType, TaskobjType>(state => state.tasks)
     const dispatch = useDispatch()
