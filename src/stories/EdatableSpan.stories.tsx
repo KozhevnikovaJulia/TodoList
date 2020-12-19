@@ -1,6 +1,6 @@
 import React from 'react';
 import { Story, Meta } from '@storybook/react/types-6-0';
-import { EditableSpan, EditableSpanPropsType  } from './EditableSpan';
+import { EditableSpan, EditableSpanPropsType  } from '../EditableSpan';
 import {action} from "@storybook/addon-actions"
 
 
