@@ -1,28 +1,28 @@
-import React, {ChangeEvent, useCallback, KeyboardEvent, useState} from "react";
-import { AddItemForm } from "./AddItemForm";
+import React, {ChangeEvent, useCallback} from "react";
 import { EditableSpan } from "./EditableSpan";
-import { FilterValuesType } from "./App";
 import IconButton from '@material-ui/core/IconButton';
 import DeleteIcon from '@material-ui/icons/Delete';
-import Button from "@material-ui/core/Button";
 import Checkbox from '@material-ui/core/Checkbox';
-import {TasksType} from "./TodoList";
+import {TaskType, TaskStatuses} from "../src/api/todolist-api";
 
 export type TaskPropsType = {
     removeTask:(taskId:string, todolistID:string)=>void
-    changeStatus:(taskID:string, isDone:boolean, todolistID:string)=> void
+    changeStatus:(taskID:string, status:TaskStatuses, todolistID:string)=> void
     changeTaskTitle:(taskID:string, newTitle:string, todolistID:string)=> void
-    task: TasksType 
+    task: TaskType 
     todolistId: string
 }
 
 export const Task = React.memo ((props:TaskPropsType) => { 
     const onClickHandler = useCallback (() => { props.removeTask(props.task.id, props.todolistId) }, [props.removeTask,props.task.id, props.todolistId ])
     const onChangeTaskTitleHandler = useCallback ((newTitle: string) => { props.changeTaskTitle(props.task.id, newTitle, props.todolistId) }, [props.changeTaskTitle, props.task.id, props.todolistId])
-    const onChangeStatusHandler = useCallback ((e: ChangeEvent<HTMLInputElement>) => { props.changeStatus(props.task.id, e.currentTarget.checked, props.todolistId) }, [props.changeStatus, props.todolistId, props.task.id ]);
+   
+    const onChangeStatusHandler = useCallback ((e: ChangeEvent<HTMLInputElement>) => { 
+        let newStatusValue = e.currentTarget.checked
+        props.changeStatus(props.task.id, newStatusValue ? TaskStatuses.Completed : TaskStatuses.New, props.todolistId) }, [props.changeStatus, props.todolistId, props.task.id ]);
     return <div key={props.task.id}>
         <Checkbox
-            checked={props.task.isDone}
+            checked={props.task.status === TaskStatuses.Completed}
             onChange={onChangeStatusHandler}
             defaultChecked
             color="default"

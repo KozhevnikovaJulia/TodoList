@@ -1,7 +1,6 @@
-import React, {useState, useReducer,useCallback} from "react";
+import React, {useCallback, useEffect} from "react";
 import './App.css';
-import {TasksType, TodoList} from "./TodoList";
-import { v1 } from "uuid";
+import {TodoList} from "./TodoList";
 import { AddItemForm } from "./AddItemForm";
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
@@ -13,25 +12,27 @@ import Container from '@material-ui/core/Container';
 import Paper from '@material-ui/core/Paper';
 import Grid from '@material-ui/core/Grid';
 import PaperBackground from "./images/3.jpg";
-import {todolistsReducer, addTodolistAC, changeTodolistFilterAC, removeTodolistAC, changeTodolistTitleAC  } from "./state/TodolistsReducer"
-import {tasksReducer, addTaskAC,  changeTaskStatusAC, changeTaskTitleAC, removeTaskAC} from "./state/TasksReducer"
+import {setTodolistsAC, addTodolistAC, changeTodolistFilterAC, removeTodolistAC, changeTodolistTitleAC  } from "./state/TodolistsReducer"
+import {addTaskAC,  changeTaskStatusAC, changeTaskTitleAC, removeTaskAC} from "./state/TasksReducer"
 import {useSelector, useDispatch} from "react-redux";
 import { AppRootStateType } from "./store/Store";
+import { TodolistAPI, TaskType, TaskStatuses, TaskPriorities } from "./api/todolist-api";
+import {TodolistBLLType, FilterValuesType} from "../src/state/TodolistsReducer";
 
-export type FilterValuesType = "all" | "completed" | "active";
-
-export type TodolistType = {
-    id: string
-    title: string
-    filter:FilterValuesType
-}
 type TaskobjType = {
-    [key: string]: Array<TasksType>
+    [key: string]: Array<TaskType>
 }
  function App() {
-    const todolists = useSelector<AppRootStateType, Array<TodolistType>>(state => state.todolists)
+    const todolists = useSelector<AppRootStateType, Array<TodolistBLLType>>(state => state.todolists)
     const tasks  = useSelector<AppRootStateType, TaskobjType>(state => state.tasks)
     const dispatch = useDispatch()
+
+    useEffect(() => {
+        TodolistAPI.getTodolists()
+        .then((res: any) => {
+            const action =  setTodolistsAC(res.data)
+            dispatch(action)})    
+    }, [])  
  
     const addTask = useCallback ((title: string, todolistID: string) => {
         let action = addTaskAC(title, todolistID)
@@ -41,8 +42,8 @@ type TaskobjType = {
         let action = addTodolistAC(title)
         dispatch(action)      
     }, [dispatch])
-    const changeStatus = useCallback ((taskID: string, isDone: boolean, todolistID: string) => {
-        let action = changeTaskStatusAC(taskID, isDone, todolistID)
+    const changeStatus = useCallback ((taskID: string, status: TaskStatuses, todolistID: string) => {
+        let action = changeTaskStatusAC(taskID, status, todolistID)
         dispatch(action)
     }, [dispatch])
     const changeTaskTitle = useCallback ((taskID: string, newTitle: string, todolistID: string) => {
@@ -69,7 +70,6 @@ type TaskobjType = {
     return (
         <div className="App">
             <AppBar position="static" style={{backgroundColor:  "rgb(185, 180, 180)" }}>
-                     {/* "rgb(150, 144, 144)" */}
                 <Toolbar>
                     <IconButton edge="start" color="inherit" aria-label="menu">
                         <MenuIcon />
@@ -93,8 +93,7 @@ type TaskobjType = {
 
                     return <Grid item >
                         <Paper elevation={3} style={{padding: "15px",
-                                                     backgroundImage: `url(${PaperBackground})`,
-                                                    //   "url(https://images.pexels.com/photos/5725894/pexels-photo-5725894.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940)",
+                                                     backgroundImage: `url(${PaperBackground})`,                                                   
                                                      backgroundSize: "100% auto"}}
                                                      key={tl.id}>
                             <TodoList title={tl.title}

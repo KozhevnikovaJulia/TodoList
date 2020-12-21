@@ -1,49 +1,35 @@
-import React, {ChangeEvent, useCallback, KeyboardEvent, useState} from "react";
+import React, {useCallback} from "react";
 import { AddItemForm } from "./AddItemForm";
 import { EditableSpan } from "./EditableSpan";
-import { FilterValuesType } from "./App";
+import { FilterValuesType } from "../src/state/TodolistsReducer";
 import IconButton from '@material-ui/core/IconButton';
 import DeleteIcon from '@material-ui/icons/Delete';
 import Button from "@material-ui/core/Button";
-import Checkbox from '@material-ui/core/Checkbox';
 import {Task} from "./Task";
+import {TaskType, TaskStatuses} from "../src/api/todolist-api";
 
 type TodoListPropsType = {
     id:string
     title:string
-    tasks:Array<TasksType>
+    tasks:Array<TaskType>
     removeTask:(taskId:string, todolistID:string)=>void
     changeFilter:(value: FilterValuesType, todolistID:string)=>void
     addTask:(title:string, todolistID:string)=>void
-    changeStatus:(taskID:string, isDone:boolean, todolistID:string)=> void
+    changeStatus:(taskID:string, status:TaskStatuses, todolistID:string)=> void
     changeTaskTitle:(taskID:string, newTitle:string, todolistID:string)=> void
     filter:FilterValuesType
     removeTodolist: (todolistID:string)=> void
     changeTodolist: (todolistID:string, newTitle: string)=> void
 }
-export type TasksType = {
-    id: string,
-    title: string,
-    isDone:boolean
-}
-
-// if (tl.filter === "active") {
-//     tasksForTodoList = allTodolistTasks.filter(task => !task.isDone)
-// }
-// if (tl.filter === "completed") {
-//     tasksForTodoList = allTodolistTasks.filter(task => {
-//         return task.isDone
-//     })
-// }
 
 export const TodoList = React.memo ((props:TodoListPropsType) => {
     
     let tasksForTodoList = props.tasks
     if (props.filter === "active") {
-        tasksForTodoList = props.tasks.filter(task => task.isDone === false)
+        tasksForTodoList = props.tasks.filter(task => task.status === TaskStatuses.New)
     }
     if (props.filter === "completed") {
-        tasksForTodoList = props.tasks.filter(task => task.isDone === true)
+        tasksForTodoList = props.tasks.filter(task => task.status === TaskStatuses.Completed)
     }
     const addTask = useCallback ((title:string) => {props.addTask(title, props.id)}, [props.addTask, props.id])
     const onClickAllFilter = useCallback (() =>{props.changeFilter("all", props.id)}, [props.changeFilter, props.id]);
