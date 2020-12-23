@@ -9,7 +9,7 @@ export const GetTask = () => {
    const [state, setState] = useState<any>(null)
    useEffect(() => {   
     const todolistId ="4a61b3cf-7944-4230-a5f1-caa91d9638ff"    
-    TaskAPI.getTasks(todolistId, 10, 1)
+    TaskAPI.getTasks(todolistId)
            .then((response) => {
                setState(response.data)
            })
@@ -70,7 +70,7 @@ export const DeleteTask = () => {
     const [deadline, setDeadline] = useState<string>("")
 
     const updateTaskCallBack = ()=> {
-        TaskAPI.updateTask(todolistId, taskId, title, description,  status, priority, startDate, deadline)
+        TaskAPI.updateTask(todolistId, taskId, {title, description,  status, priority, startDate, deadline})
         .then((response) => {
             setState(response.data)
         })    

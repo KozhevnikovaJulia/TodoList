@@ -52,11 +52,16 @@ function App() {
        )
 
     function addTask(title: string, todolistID: string) {
-        let action = addTaskAC(title, todolistID)
+        let action = addTaskAC ({id: v1(), title: title, status: TaskStatuses.Completed, description: "",
+        priority: TaskPriorities.Hi, startDate: "", deadline: "", todoListId: todolistID,
+        order: 0, addedDate: ""
+    })
         dispatchTaskobjs(action)
     }
     function addTodolist(title: string) {
-        let action = addTodolistAC(title)
+        let action = addTodolistAC({
+            id: v1(), title: title, addedDate: "", order: 0
+        })
         dispatchTodolists(action)
         dispatchTaskobjs(action)
     }
@@ -91,7 +96,6 @@ function App() {
     return (
         <div className="App">
             <AppBar position="static" style={{backgroundColor:  "rgb(185, 180, 180)" }}>
-                     {/* "rgb(150, 144, 144)" */}
                 <Toolbar>
                     <IconButton edge="start" color="inherit" aria-label="menu">
                         <MenuIcon />
