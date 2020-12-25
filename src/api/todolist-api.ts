@@ -1,4 +1,4 @@
-import Axios from "axios";
+import Axios from "axios"
 
 export enum TaskStatuses {
 New = 0,
@@ -13,7 +13,7 @@ Hi = 2,
 Urgently = 3,
 Later = 4
 }
-type UpdateTaskModelType = {
+export type UpdateTaskModelType = {
     title: string
     description: string
     status: number

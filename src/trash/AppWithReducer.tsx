@@ -1,21 +1,21 @@
-import React, {useReducer} from "react";
-import './App.css';
-import {TodoList} from "./TodoList";
-import { v1 } from "uuid";
-import { AddItemForm } from "./AddItemForm";
-import AppBar from '@material-ui/core/AppBar';
-import Toolbar from '@material-ui/core/Toolbar';
-import Typography from '@material-ui/core/Typography';
-import Button from '@material-ui/core/Button';
-import IconButton from '@material-ui/core/IconButton';
-import MenuIcon from '@material-ui/icons/Menu';
-import Container from '@material-ui/core/Container';
-import Paper from '@material-ui/core/Paper';
-import Grid from '@material-ui/core/Grid';
-import PaperBackground from "./images/3.jpg";
-import {FilterValuesType, todolistsReducer, addTodolistAC, changeTodolistFilterAC, removeTodolistAC, changeTodolistTitleAC  } from "./state/TodolistsReducer"
-import { tasksReducer, addTaskAC,  changeTaskStatusAC, changeTaskTitleAC, removeTaskAC} from "./state/TasksReducer"
-import {TaskStatuses, TaskPriorities} from "../src/api/todolist-api";
+import React, {useReducer} from "react"
+import "./App.css"
+import {TodoList} from "../features/todolist/TodoList"
+import { v1 } from "uuid"
+import { AddItemForm } from "../components/addItemForm/AddItemForm"
+import AppBar from "@material-ui/core/AppBar"
+import Toolbar from "@material-ui/core/Toolbar"
+import Typography from "@material-ui/core/Typography"
+import Button from "@material-ui/core/Button"
+import IconButton from "@material-ui/core/IconButton"
+import MenuIcon from "@material-ui/icons/Menu"
+import Container from "@material-ui/core/Container"
+import Paper from "@material-ui/core/Paper"
+import Grid from "@material-ui/core/Grid"
+import PaperBackground from "./images/3.jpg"
+import {FilterValuesType, todolistsReducer, addTodolistAC, changeTodolistFilterAC, removeTodolistAC, changeTodolistTitleAC  } from "../features/todolist/TodolistsReducer"
+import { tasksReducer, addTaskAC, updateTaskAC, removeTaskAC} from "../features/todolist/TasksReducer"
+import {TaskStatuses, TaskPriorities} from "../api/todolist-api"
 
 function App() {
     let todolistId1 = v1();
@@ -66,11 +66,11 @@ function App() {
         dispatchTaskobjs(action)
     }
     function changeStatus(taskID: string, status: TaskStatuses, todolistID: string) {
-        let action = changeTaskStatusAC(taskID, status, todolistID)
+        let action = updateTaskAC(taskID, {status}, todolistID)
         dispatchTaskobjs(action)
     }
     function changeTaskTitle(taskID: string, newTitle: string, todolistID: string) {
-        let action = changeTaskTitleAC (taskID, newTitle, todolistID)
+        let action = updateTaskAC (taskID, {title: newTitle}, todolistID)
         dispatchTaskobjs(action)
     }
 

@@ -1,4 +1,4 @@
-import {userReducer} from "./UserReducer";
+import {userReducer} from "./UserReducer"
 
 test("userRecuser should increment only age", () => {
 const startState = {age: 20, childrenCount: 2, name: "Julia" }

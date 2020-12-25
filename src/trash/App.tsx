@@ -1,20 +1,20 @@
-import React, {useState} from "react";
-import './App.css';
-import {TodoList} from "./TodoList";
-import { v1 } from "uuid";
-import { AddItemForm } from "./AddItemForm";
-import AppBar from '@material-ui/core/AppBar';
-import Toolbar from '@material-ui/core/Toolbar';
-import Typography from '@material-ui/core/Typography';
-import Button from '@material-ui/core/Button';
-import IconButton from '@material-ui/core/IconButton';
-import MenuIcon from '@material-ui/icons/Menu';
-import Container from '@material-ui/core/Container';
-import Paper from '@material-ui/core/Paper';
-import Grid from '@material-ui/core/Grid';
-import PaperBackground from "./images/3.jpg";
-import {TaskType, TaskStatuses, TaskPriorities} from "../src/api/todolist-api";
-import {TodolistBLLType, FilterValuesType} from "../src/state/TodolistsReducer";
+import React, {useState} from "react"
+import './App.css'
+import {TodoList} from "../features/todolist/TodoList"
+import { v1 } from "uuid"
+import { AddItemForm } from "../components/addItemForm/AddItemForm"
+import AppBar from "@material-ui/core/AppBar"
+import Toolbar from "@material-ui/core/Toolbar"
+import Typography from "@material-ui/core/Typography"
+import Button from "@material-ui/core/Button"
+import IconButton from "@material-ui/core/IconButton"
+import MenuIcon from "@material-ui/icons/Menu"
+import Container from "@material-ui/core/Container"
+import Paper from "@material-ui/core/Paper"
+import Grid from "@material-ui/core/Grid"
+import PaperBackground from "./images/3.jpg"
+import {TaskType, TaskStatuses, TaskPriorities} from "../api/todolist-api"
+import {TodolistBLLType, FilterValuesType} from "../features/todolist/TodolistsReducer"
 
 type TaskobjType = {
     [key: string]: Array<TaskType>

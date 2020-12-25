@@ -1,17 +1,9 @@
-import React, {ChangeEvent, useCallback} from "react";
-import { EditableSpan } from "./EditableSpan";
-import IconButton from '@material-ui/core/IconButton';
-import DeleteIcon from '@material-ui/icons/Delete';
-import Checkbox from '@material-ui/core/Checkbox';
-import {TaskType, TaskStatuses} from "../src/api/todolist-api";
-
-export type TaskPropsType = {
-    removeTask:(taskId:string, todolistID:string)=>void
-    changeStatus:(taskID:string, status:TaskStatuses, todolistID:string)=> void
-    changeTaskTitle:(taskID:string, newTitle:string, todolistID:string)=> void
-    task: TaskType 
-    todolistId: string
-}
+import React, {ChangeEvent, useCallback} from "react"
+import { EditableSpan } from "../../../components/editableSpan/EditableSpan"
+import IconButton from "@material-ui/core/IconButton"
+import DeleteIcon from "@material-ui/icons/Delete"
+import Checkbox from "@material-ui/core/Checkbox"
+import {TaskType, TaskStatuses} from "../../../api/todolist-api"
 
 export const Task = React.memo ((props:TaskPropsType) => { 
     const onClickHandler = useCallback (() => { props.removeTask(props.task.id, props.todolistId) }, [props.removeTask,props.task.id, props.todolistId ])
@@ -33,3 +25,12 @@ export const Task = React.memo ((props:TaskPropsType) => {
             <DeleteIcon />
         </IconButton></div>
 })
+
+//types
+export type TaskPropsType = {
+    removeTask:(taskId:string, todolistID:string)=>void
+    changeStatus:(taskID:string, status:TaskStatuses, todolistID:string)=> void
+    changeTaskTitle:(taskID:string, newTitle:string, todolistID:string)=> void
+    task: TaskType 
+    todolistId: string
+}

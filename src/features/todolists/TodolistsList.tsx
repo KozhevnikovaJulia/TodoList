@@ -1,27 +1,16 @@
-import React, {useCallback, useEffect} from "react";
-import './App.css';
-import {TodoList} from "./TodoList";
-import { AddItemForm } from "./AddItemForm";
-import AppBar from '@material-ui/core/AppBar';
-import Toolbar from '@material-ui/core/Toolbar';
-import Typography from '@material-ui/core/Typography';
-import Button from '@material-ui/core/Button';
-import IconButton from '@material-ui/core/IconButton';
-import MenuIcon from '@material-ui/icons/Menu';
-import Container from '@material-ui/core/Container';
-import Paper from '@material-ui/core/Paper';
-import Grid from '@material-ui/core/Grid';
-import PaperBackground from "./images/3.jpg";
-import {changeTodolistTitleTC, addTodolistTC,removeTodolistTC, fetchTodolistsTC , TodolistBLLType, FilterValuesType, addTodolistAC, changeTodolistFilterAC, removeTodolistAC, changeTodolistTitleAC  } from "./state/TodolistsReducer"
-import {changeTaskTitleTC, changeTaskStatusTC, addTaskTC, removeTaskTC, addTaskAC,  changeTaskStatusAC, changeTaskTitleAC} from "./state/TasksReducer"
-import {useSelector, useDispatch} from "react-redux";
-import { AppRootStateType } from "./store/Store";
-import {TaskType, TaskStatuses} from "./api/todolist-api";
+import React, {useCallback, useEffect} from "react"
+import {TodoList} from "../todolist/TodoList"
+import {AddItemForm} from "../../components/addItemForm/AddItemForm"
+import Paper from "@material-ui/core/Paper"
+import Grid from "@material-ui/core/Grid"
+import PaperBackground from "../../images/3.jpg"
+import {changeTodolistTitleTC, addTodolistTC,removeTodolistTC, fetchTodolistsTC , TodolistBLLType, FilterValuesType, TaskobjType, changeTodolistFilterAC} from "../../features/todolist/TodolistsReducer"
+import {updateTaskTC, addTaskTC, removeTaskTC} from "../../features/todolist/TasksReducer"
+import {useSelector, useDispatch} from "react-redux"
+import {AppRootStateType} from "../../app/Store"
+import {TaskStatuses} from "../../api/todolist-api"
 
-type TaskobjType = {
-    [key: string]: Array<TaskType>
-}
- function App() {
+export function TodolistsList() {
     const todolists = useSelector<AppRootStateType, Array<TodolistBLLType>>(state => state.todolists)
     const tasks  = useSelector<AppRootStateType, TaskobjType>(state => state.tasks)
     const dispatch = useDispatch()
@@ -39,11 +28,11 @@ type TaskobjType = {
         dispatch(thunk)    
     }, [dispatch])
     const changeStatus = useCallback ((taskID: string, status: TaskStatuses, todolistID: string) => {
-        const thunk = changeTaskStatusTC (taskID, status, todolistID)
+        const thunk = updateTaskTC (taskID, {status}, todolistID)
         dispatch(thunk)         
     }, [])
     const changeTaskTitle = useCallback ((taskID: string, newTitle: string, todolistID: string) => {
-        const thunk = changeTaskTitleTC (taskID, newTitle, todolistID)
+        const thunk = updateTaskTC (taskID, {title: newTitle}, todolistID)
         dispatch(thunk) 
     }, [])
     const removeTask = useCallback ((id: string, todolistID: string) =>{
@@ -62,23 +51,8 @@ type TaskobjType = {
         const thunk = changeTodolistTitleTC (todolistID, newTitle)
         dispatch(thunk)     
     }, [])
-
-    return (
-        <div className="App">
-            <AppBar position="static" style={{backgroundColor:  "rgb(185, 180, 180)" }}>
-                <Toolbar>
-                    <IconButton edge="start" color="inherit" aria-label="menu">
-                        <MenuIcon />
-                    </IconButton>
-                    <Typography variant="h6">
-                        News
-                    </Typography>
-                    <Button color="inherit">Login</Button>
-                </Toolbar>
-            </AppBar>
-
-            <Container fixed>
-            <Grid container style={{padding: "25px"}}>
+    return  <> 
+<Grid container style={{padding: "25px"}}>
                 <AddItemForm addItem={addTodolist} />
             </Grid>
             <Grid container spacing={3}>
@@ -108,11 +82,5 @@ type TaskobjType = {
                     </Grid>
                 })}
             </Grid>
-            </Container>
-
-        </div>
-    )
-
+         </>
 }
-
-export default App;
