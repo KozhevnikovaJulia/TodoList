@@ -2,6 +2,7 @@ import { Dispatch } from "redux"
 import { AppRootStateType } from "../../app/Store"
 import { TaskType, TaskAPI, UpdateTaskModelType } from "../../api/todolist-api"
 import { AddTodolistActionType, RemoveTodolistActionType, SetTodolistsActionType } from "./TodolistsReducer"
+import {setStatusAC, setErrorAC, SetErrorActionType, SetStatusActionType} from "../../app/appReducer"
 
 let initialState: TaskobjType = {}
 
@@ -47,10 +48,12 @@ export const setTasksAC = (tasks: Array<TaskType>, todolistId: string) =>
     ({ type: "SET-TASKS", tasks, todolistId } as const)
 
 // thunks
-export const fetchTasksTS = (todolistId: string) => (dispatch: Dispatch<ActionType>) => {
-        TaskAPI.getTasks(todolistId)
+export const fetchTasksTS = (todolistId: string) => (dispatch: Dispatch<ActionType | SetStatusActionType>) => {
+        dispatch (setStatusAC("loading"))
+    TaskAPI.getTasks(todolistId)
             .then((res: any) => {
                 dispatch(setTasksAC(res.data.items, todolistId))
+                dispatch (setStatusAC("succeeded"))
             })
     }
 export const removeTaskTC = (taskId: string, todolistId: string) => (dispatch: Dispatch<ActionType>) => {
@@ -59,10 +62,22 @@ export const removeTaskTC = (taskId: string, todolistId: string) => (dispatch: D
                 dispatch(removeTaskAC(taskId, todolistId))
             })
     }
-export const addTaskTC = (title: string, todolistId: string) => (dispatch: Dispatch<ActionType>) => {
-        TaskAPI.createTask(todolistId, title)
+export const addTaskTC = (title: string, todolistId: string) => (dispatch: Dispatch<ActionType | SetErrorActionType | SetStatusActionType>) => {
+    dispatch (setStatusAC("loading"))
+    TaskAPI.createTask(todolistId, title)
             .then((res: any) => {
-                dispatch(addTaskAC(res.data.data.item))
+                if (res.data.resultCode === 0) {
+                    dispatch(addTaskAC(res.data.data.item))
+                    dispatch (setStatusAC("succeeded"))
+                } else {
+                    if (res.data.messages.length) {
+                        dispatch(setErrorAC(res.data.messages[0]))
+                    } else {
+                        dispatch(setErrorAC("Some error occurred"))
+                    }
+                    dispatch (setStatusAC("failed"))
+                }
+                
             })
     }
 export const updateTaskTC = (taskId: string, bllModel: UpdateBLLTaskModelType, todolistId: string) =>

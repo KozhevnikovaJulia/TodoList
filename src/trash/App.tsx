@@ -23,8 +23,8 @@ function App() {
     let todolistId1 = v1();
     let todolistId2 = v1();
     let [todolists, setTodolists] = useState <TodolistBLLType[]>([
-        {id: todolistId1, title:"What to learn", filter:"all", addedDate: "", order: 0},
-        {id: todolistId2, title:"What to buy", filter:"all", addedDate: "", order: 0}
+        {id: todolistId1, title:"What to learn", filter:"all", addedDate: "", order: 0, entityStatus: "idle"},
+        {id: todolistId2, title:"What to buy", filter:"all", addedDate: "", order: 0, entityStatus: "idle"}
     ]  )
     let [taskobjs, setTaskobjs] = useState<TaskobjType >({
         [todolistId1]: [
@@ -65,7 +65,7 @@ function App() {
     function addTodolist(title:string) {
         let newTodolistId = v1()
         let newTodolist: TodolistBLLType = {id: newTodolistId, title: title, filter:"all", addedDate: "",
-        order: 0}
+        order: 0, entityStatus: "idle"}
         setTodolists([newTodolist,...todolists])
         setTaskobjs ({ [newTodolistId ]: [ ], ...taskobjs})
     }

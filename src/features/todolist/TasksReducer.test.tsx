@@ -140,8 +140,8 @@ test('correct task should be added to correct array', () => {
 
  test('empty array should be after we set todolists', () => { 
     const action = setTodolistsAC([
-        {id: "1", title: "What to learn", filter: "all",  addedDate: "", order: 0},
-        {id: "2", title: "What to buy", filter: "all",  addedDate: "", order: 0}
+        {id: "1", title: "What to learn", filter: "all",  addedDate: "", order: 0, entityStatus: "idle"},
+        {id: "2", title: "What to buy", filter: "all",  addedDate: "", order: 0, entityStatus: "idle"}
     ]);
  
     const endTasksState = tasksReducer({}, action)
