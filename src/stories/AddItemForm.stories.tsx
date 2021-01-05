@@ -10,6 +10,9 @@ export default {
 } as Meta;
 const callBack = action("Button inside form clicked")
 export const AddItemFormBaseExample = () =>
- <AddItemForm  addItem={callBack}/>;
+  <AddItemForm addItem={callBack} />;
+
+export const AddItemFormDisabledExample = () =>
+  <AddItemForm addItem={callBack} disabled={true} />;
 
 

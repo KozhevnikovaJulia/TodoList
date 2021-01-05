@@ -12,4 +12,6 @@ const callBack = action("Value changed")
 export const EditableSpanBaseExample = () =>
  <EditableSpan  value={"start value"} onChange={callBack}/>;
 
+ export const EditableSpanDisabledExample = () =>
+ <EditableSpan  value={"start value"} onChange={callBack} disabled={true}/>;
 

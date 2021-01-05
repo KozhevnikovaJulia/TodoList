@@ -4,14 +4,15 @@ import TextField from '@material-ui/core/TextField'
 
  export type AddItemPropsType = {    
     addItem:(title:string)=>void
+    disabled?: boolean
 }
 
-export const AddItemForm = React.memo( (props:AddItemPropsType) => {
+export const AddItemForm = React.memo( ({addItem, disabled = false}:AddItemPropsType) => {
     console.log("AddItem")
     let [title, setTitle] = useState(" ")
     let [error, setError] = useState<boolean>(false)
 
-    const addItemTitle = () => { if (title.trim() !== ""){ props.addItem(title); setTitle(" ") }
+    const addItemTitle = () => { if (title.trim() !== ""){ addItem(title); setTitle(" ") }
                                  else { setError(true) }}
     const onChangeHandler = (e: ChangeEvent<HTMLInputElement>) => { setTitle(e.currentTarget.value)};
     const onKeyPressHandler = (e: KeyboardEvent<HTMLInputElement>) => {if(error!==false) {setError(false)};
@@ -21,8 +22,8 @@ export const AddItemForm = React.memo( (props:AddItemPropsType) => {
         <div>
             <TextField error={error} variant="outlined" id="outlined-error-helper-text" 
              label={error ? "Error" : "Input text"} helperText={error ? "Title is required!" : ""}
-                value={title} onChange={onChangeHandler} onKeyPress={onKeyPressHandler} />
-            <Button variant="contained" size="small" onClick={addItemTitle} style={{height:"55px"}}>ADD</Button>
+                value={title} onChange={onChangeHandler} onKeyPress={onKeyPressHandler} disabled={disabled}/>
+            <Button variant="contained" size="small" onClick={addItemTitle} style={{height:"55px"}} disabled={disabled}>ADD</Button>
         </div>
                 
     )

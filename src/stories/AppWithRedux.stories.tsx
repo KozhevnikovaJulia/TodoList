@@ -10,6 +10,6 @@ export default {
 } as Meta;
 
 export const AppWithReduxBaseExample = () =>
- <App />
+ <App demo={true}/>
 
 

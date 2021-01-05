@@ -10,12 +10,19 @@ import {useSelector, useDispatch} from "react-redux"
 import {AppRootStateType} from "../../app/Store"
 import {TaskStatuses} from "../../api/todolist-api"
 
-export function TodolistsList() {
+type TodolistsListPropsType = {
+    demo?: boolean
+}
+
+export function TodolistsList({demo = false}: TodolistsListPropsType) {
     const todolists = useSelector<AppRootStateType, Array<TodolistBLLType>>(state => state.todolists)
     const tasks  = useSelector<AppRootStateType, TaskobjType>(state => state.tasks)
     const dispatch = useDispatch()
 
     useEffect(() => {
+        if (demo){
+            return
+        }
         dispatch(fetchTodolistsTC())
     }, [])  
  
@@ -66,8 +73,10 @@ export function TodolistsList() {
                                                      backgroundImage: `url(${PaperBackground})`,                                                   
                                                      backgroundSize: "100% auto"}}
                                                      key={tl.id}>
-                            <TodoList title={tl.title}
-                                id={tl.id}
+                            <TodoList 
+                            todolist={tl}
+                            // title={tl.title}
+                            //     id={tl.id}
                                 key={tl.id}
                                 tasks={tasksForTodoList}
                                 removeTask={removeTask}
@@ -75,9 +84,10 @@ export function TodolistsList() {
                                 addTask={addTask}
                                 changeStatus={changeStatus}
                                 changeTaskTitle={changeTaskTitle}
-                                filter={tl.filter}
+                                // filter={tl.filter}
                                 removeTodolist={removeTodolist}
-                                changeTodolist={changeTodolist} />
+                                changeTodolist={changeTodolist}
+                                demo={demo} />
                         </Paper>
                     </Grid>
                 })}

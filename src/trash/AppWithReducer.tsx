@@ -128,8 +128,10 @@ function App() {
                         <Paper elevation={3} style={{padding: "15px",
                                                      backgroundImage: `url(${PaperBackground})`,                                                    
                                                      backgroundSize: "100% auto"}}>
-                            <TodoList title={tl.title}
-                                id={tl.id}
+                            <TodoList 
+                            todolist={tl}
+                            // title={tl.title}
+                            //     id={tl.id}
                                 key={tl.id}
                                 tasks={tasksForTodoList}
                                 removeTask={removeTask}
@@ -137,7 +139,7 @@ function App() {
                                 addTask={addTask}
                                 changeStatus={changeStatus}
                                 changeTaskTitle={changeTaskTitle}
-                                filter={tl.filter}
+                                // filter={tl.filter}
                                 removeTodolist={removeTodolist}
                                 changeTodolist={changeTodolist} />
                         </Paper>

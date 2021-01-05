@@ -4,9 +4,10 @@ import TextField from "@material-ui/core/TextField"
  export type EditableSpanPropsType = {
     value:string
     onChange:(newTitle: string)=> void
+    disabled?:boolean
 }
 
-export const EditableSpan = React.memo ((props:EditableSpanPropsType) => {
+export const EditableSpan = React.memo (({disabled= false, ...props}:EditableSpanPropsType) => {
     let [editMode, seteditMode] = useState<boolean>(false)
     let [title, setTitle] = useState<string>(props.value)
 
@@ -17,7 +18,7 @@ export const EditableSpan = React.memo ((props:EditableSpanPropsType) => {
     const onChangeHandler = (e: ChangeEvent<HTMLInputElement>) => { setTitle(e.currentTarget.value)};
     
     return ( editMode ? <TextField  id="outlined-size-small" defaultValue="Small"  variant="outlined" size="small"
-                         onChange={onChangeHandler} autoFocus onBlur={disactivateEditMode} value={title}/>    
+                         onChange={onChangeHandler} autoFocus onBlur={disactivateEditMode} value={title} disabled={disabled}/>    
                       : <span onDoubleClick={ activateEditMode }>{props.value}</span>                     
     )
 })

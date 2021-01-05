@@ -3,6 +3,7 @@ import { AppRootStateType } from "../../app/Store"
 import { TaskType, TaskAPI, UpdateTaskModelType } from "../../api/todolist-api"
 import { AddTodolistActionType, RemoveTodolistActionType, SetTodolistsActionType } from "./TodolistsReducer"
 import {setStatusAC, setErrorAC, SetErrorActionType, SetStatusActionType} from "../../app/appReducer"
+import { hendleServerAppError,  hendleServerNetworkError} from "../../utils/errorUtils"
 
 let initialState: TaskobjType = {}
 
@@ -48,7 +49,7 @@ export const setTasksAC = (tasks: Array<TaskType>, todolistId: string) =>
     ({ type: "SET-TASKS", tasks, todolistId } as const)
 
 // thunks
-export const fetchTasksTS = (todolistId: string) => (dispatch: Dispatch<ActionType | SetStatusActionType>) => {
+export const fetchTasksTS = (todolistId: string) => (dispatch: ThunkDispatch) => {
         dispatch (setStatusAC("loading"))
     TaskAPI.getTasks(todolistId)
             .then((res: any) => {
@@ -62,26 +63,23 @@ export const removeTaskTC = (taskId: string, todolistId: string) => (dispatch: D
                 dispatch(removeTaskAC(taskId, todolistId))
             })
     }
-export const addTaskTC = (title: string, todolistId: string) => (dispatch: Dispatch<ActionType | SetErrorActionType | SetStatusActionType>) => {
+export const addTaskTC = (title: string, todolistId: string) => (dispatch: ThunkDispatch) => {
     dispatch (setStatusAC("loading"))
     TaskAPI.createTask(todolistId, title)
-            .then((res: any) => {
+            .then((res: any) => {                
                 if (res.data.resultCode === 0) {
                     dispatch(addTaskAC(res.data.data.item))
                     dispatch (setStatusAC("succeeded"))
                 } else {
-                    if (res.data.messages.length) {
-                        dispatch(setErrorAC(res.data.messages[0]))
-                    } else {
-                        dispatch(setErrorAC("Some error occurred"))
-                    }
-                    dispatch (setStatusAC("failed"))
-                }
-                
+                    hendleServerAppError(res.data, dispatch)
+                }                
+            })
+            .catch ((error)=>{
+                hendleServerNetworkError(error, dispatch)
             })
     }
 export const updateTaskTC = (taskId: string, bllModel: UpdateBLLTaskModelType, todolistId: string) =>
-    (dispatch: Dispatch<ActionType>, getState: () => AppRootStateType) => {
+    (dispatch: ThunkDispatch , getState: () => AppRootStateType) => {
         const allTasksFromState = getState().tasks;
         const tasksForCurrentTodolist = allTasksFromState[todolistId]
         const task = tasksForCurrentTodolist.find(t => t.id === taskId)
@@ -97,7 +95,15 @@ export const updateTaskTC = (taskId: string, bllModel: UpdateBLLTaskModelType, t
             }
             TaskAPI.updateTask(todolistId, taskId, apiModel)
                 .then((res: any) => {
-                    dispatch(updateTaskAC(taskId, bllModel, todolistId))
+                    if (res.data.resultCode === 0){
+                        dispatch(updateTaskAC(taskId, bllModel, todolistId))
+                    } else {
+                        hendleServerAppError(res.data, dispatch)
+                    }
+                   
+                })
+                .catch ((error)=>{
+                    hendleServerNetworkError(error, dispatch)
                 })
         }
     }
@@ -121,3 +127,5 @@ export type UpdateBLLTaskModelType = {
 export type TaskobjType = {
     [key: string]: Array<TaskType>
 }
+
+type ThunkDispatch = Dispatch<ActionType | SetStatusActionType | SetErrorActionType >
