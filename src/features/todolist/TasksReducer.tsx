@@ -3,7 +3,7 @@ import { AppRootStateType } from "../../app/Store"
 import { TaskType, TaskAPI, UpdateTaskModelType } from "../../api/todolist-api"
 import { AddTodolistActionType, RemoveTodolistActionType, SetTodolistsActionType } from "./TodolistsReducer"
 import {setStatusAC, setErrorAC, SetErrorActionType, SetStatusActionType} from "../../app/appReducer"
-import { hendleServerAppError,  hendleServerNetworkError} from "../../utils/errorUtils"
+import { handleServerAppError,  handleServerNetworkError} from "../../utils/errorUtils"
 
 let initialState: TaskobjType = {}
 
@@ -71,11 +71,11 @@ export const addTaskTC = (title: string, todolistId: string) => (dispatch: Thunk
                     dispatch(addTaskAC(res.data.data.item))
                     dispatch (setStatusAC("succeeded"))
                 } else {
-                    hendleServerAppError(res.data, dispatch)
+                    handleServerAppError(res.data, dispatch)
                 }                
             })
             .catch ((error)=>{
-                hendleServerNetworkError(error, dispatch)
+                handleServerNetworkError(error, dispatch)
             })
     }
 export const updateTaskTC = (taskId: string, bllModel: UpdateBLLTaskModelType, todolistId: string) =>
@@ -98,12 +98,12 @@ export const updateTaskTC = (taskId: string, bllModel: UpdateBLLTaskModelType, t
                     if (res.data.resultCode === 0){
                         dispatch(updateTaskAC(taskId, bllModel, todolistId))
                     } else {
-                        hendleServerAppError(res.data, dispatch)
+                        handleServerAppError(res.data, dispatch)
                     }
                    
                 })
                 .catch ((error)=>{
-                    hendleServerNetworkError(error, dispatch)
+                    handleServerNetworkError(error, dispatch)
                 })
         }
     }

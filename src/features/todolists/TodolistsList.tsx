@@ -7,8 +7,9 @@ import PaperBackground from "../../images/3.jpg"
 import {changeTodolistTitleTC, addTodolistTC,removeTodolistTC, fetchTodolistsTC , TodolistBLLType, FilterValuesType, TaskobjType, changeTodolistFilterAC} from "../../features/todolist/TodolistsReducer"
 import {updateTaskTC, addTaskTC, removeTaskTC} from "../../features/todolist/TasksReducer"
 import {useSelector, useDispatch} from "react-redux"
-import {AppRootStateType} from "../../app/Store"
 import {TaskStatuses} from "../../api/todolist-api"
+import {AppRootStateType} from "../../app/Store"
+import { Redirect } from "react-router-dom";
 
 type TodolistsListPropsType = {
     demo?: boolean
@@ -17,10 +18,11 @@ type TodolistsListPropsType = {
 export function TodolistsList({demo = false}: TodolistsListPropsType) {
     const todolists = useSelector<AppRootStateType, Array<TodolistBLLType>>(state => state.todolists)
     const tasks  = useSelector<AppRootStateType, TaskobjType>(state => state.tasks)
+    const isLoggedIn = useSelector<AppRootStateType, boolean>(state => state.auth.isLoggedIn)
     const dispatch = useDispatch()
 
     useEffect(() => {
-        if (demo){
+        if (demo || !isLoggedIn){
             return
         }
         dispatch(fetchTodolistsTC())
@@ -58,6 +60,12 @@ export function TodolistsList({demo = false}: TodolistsListPropsType) {
         const thunk = changeTodolistTitleTC (todolistID, newTitle)
         dispatch(thunk)     
     }, [])
+      
+  
+ if (!isLoggedIn) {
+    return <Redirect  to = {"/login"}/>
+ }
+
     return  <> 
 <Grid container style={{padding: "25px"}}>
                 <AddItemForm addItem={addTodolist} />

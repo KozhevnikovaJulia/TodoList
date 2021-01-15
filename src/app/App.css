@@ -3,3 +3,12 @@
     background-size: 100% auto;
     height: 100vh;
 }
+.toolBur {
+    display: flex;
+    justify-content: space-between;
+}
+.iconBlock {
+    display: flex;
+    justify-content: flex-start;
+    text-align: center;
+}

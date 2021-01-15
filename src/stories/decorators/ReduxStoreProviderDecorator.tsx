@@ -8,11 +8,13 @@ import {v1} from "uuid"
 import {AppRootStateType} from "../../app/Store"
 import {TaskStatuses, TaskPriorities} from "../../../src/api/todolist-api"
 import thunk from "redux-thunk"
+import { authReducer } from "../../features/login/authReducer"
 
 const rootReducer = combineReducers({
    tasks: tasksReducer,
    todolists: todolistsReducer,
-   app: appReducer
+   app: appReducer,
+   auth: authReducer   
 })
 
 const initialGlobalState = {
@@ -38,7 +40,8 @@ tasks: {
         order: 0, addedDate: ""}
     ]
 },
-app: { status: "", error: null}
+app: { status: "", error: null, isInitialized: false},
+auth: { isLoggedIn: false}
 };
 
 export const storyBookStore = createStore(rootReducer, initialGlobalState as AppRootStateType, applyMiddleware(thunk));

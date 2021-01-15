@@ -1,5 +1,6 @@
 import Axios from "axios"
 
+
 export enum TaskStatuses {
 New = 0,
 InProgress = 1,
@@ -12,6 +13,13 @@ Middle = 1,
 Hi = 2,
 Urgently = 3,
 Later = 4
+}
+
+export type LoginParamsType = {
+    email: string
+    password: string
+    rememberMe: boolean
+    captcha?: string
 }
 export type UpdateTaskModelType = {
     title: string
@@ -82,12 +90,22 @@ export const TaskAPI = {
     deleteTask (todolistId: string, taskId: string) {
         return instance.delete <ResponseType<{}>>(`todo-lists/${todolistId}/tasks/${taskId}`)
     },
-    // updateTask (todolistId: string, taskId: string, model: UpdateTaskModelType{ title: string, description: string,
-    //              status: number, priority: number, startDate: string, deadline: string}) {
-    //     return instance.put <ResponseType<{}>> (`todo-lists/${todolistId}/tasks/${taskId}`, {
-    //         title, description, status, priority, startDate, deadline})
-    // },
     updateTask(todolistId: string, taskId: string, model: UpdateTaskModelType) {
         return instance.put<ResponseType<{}>>(`todo-lists/${todolistId}/tasks/${taskId}`, model)
     },
 }
+
+export const AuthAPI = {
+    login(data: LoginParamsType) {
+        return instance.post<ResponseType<{userId?: number}>>(`auth/login`, data)
+    },
+    logout () {
+        return instance.delete<ResponseType<{}>>(`auth/login`)
+    },  
+    me () {
+        return instance.get<ResponseType<{id: number, email: string, login: string}>>(`auth/me`)
+    }  
+ }
+
+
+
