@@ -1,0 +1,16 @@
+export enum ACTIONS_TYPE {
+    REMOVE_TASK = "todolist/tasks/REMOVE-TASK",
+    ADD_TASK = "todolist/tasks/ADD-TASK",
+    UPDATE_TASK = "todolist/tasks/UPDATE-TASK",
+    SET_TASKS = "todolist/tasks/SET-TASKS",
+    ADD_TODOLIST = "todolist/todolists/ADD-TODOLIST",
+    REMOVE_TODOLIST = "todolist/todolists/REMOVE-TODOLIST",
+    SET_TODOLISTS = "todolist/todolists/SET-TODOLISTS",
+    CHANGE_TODOLIST_TITLE = "todolist/todolists/CHANGE-TODOLIST-TITLE",
+    CHANGE_TODOLIST_FILTER = "todolist/todolists/CHANGE-TODOLIST-FILTER",
+    CHANGE_TODOLIST_ENTITY_STATUS = "todolist/todolists/CHANGE-TODOLIST-ENTITY-STATUS",
+    SET_ISLOGGEDIN = "todolist/login/SET-IS-LOGGED-IN",
+    SET_STATUS = "todolist/app/SET-STATUS",
+    SET_ERROR = "todolist/app/SET-ERROR",
+    SET_INITIALIZED = "todolist/app/SET-INITIALIZED",
+  }

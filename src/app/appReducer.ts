@@ -1,6 +1,7 @@
 import {AuthAPI} from "../api/todolist-api"
 import { Dispatch } from "redux"
 import {setIsLoggedInAC} from "../features/login/authReducer"
+import {ACTIONS_TYPE} from "../utils/enumActionTypes"
 
 const initialState: InitialStateType = {
    status: 'loading',
@@ -10,19 +11,19 @@ const initialState: InitialStateType = {
 
 export const appReducer = (state: InitialStateType = initialState, action: ActionsType): InitialStateType => {
     switch (action.type) {
-        case 'APP/SET-STATUS':
+        case ACTIONS_TYPE.SET_STATUS:
             return { ...state, status: action.status }
-        case 'APP/SET-ERROR':
+        case ACTIONS_TYPE.SET_ERROR:
             return { ...state, error: action.error }
-        case 'APP/SET-INITIALIZED':
+        case ACTIONS_TYPE.SET_INITIALIZED:
             return { ...state, isInitialized: action.isInitialized }
         default:
             return { ...state }
     }
 }
-export const setStatusAC = (status: RequestStatusType) => ({ type: "APP/SET-STATUS", status } as const)
-export const setErrorAC = (error: string | null) => ({ type: "APP/SET-ERROR", error } as const)
-export const setInitializedAC = (isInitialized: boolean) => ({ type: 'APP/SET-INITIALIZED', isInitialized } as const)
+export const setStatusAC = (status: RequestStatusType) => ({ type: ACTIONS_TYPE.SET_STATUS, status } as const)
+export const setErrorAC = (error: string | null) => ({ type: ACTIONS_TYPE.SET_ERROR, error } as const)
+export const setInitializedAC = (isInitialized: boolean) => ({ type: ACTIONS_TYPE.SET_INITIALIZED, isInitialized } as const)
 
 export const initializeAppTC = () => (dispatch: Dispatch) => {
     AuthAPI.me().then(res => {

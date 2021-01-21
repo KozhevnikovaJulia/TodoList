@@ -2,6 +2,7 @@ import { Dispatch } from "redux"
 import { SetErrorActionType, setStatusAC , SetStatusActionType } from "../../app/appReducer"
 import {AuthAPI, LoginParamsType} from "../../api/todolist-api"
 import { handleServerAppError,  handleServerNetworkError} from "../../utils/errorUtils"
+import {ACTIONS_TYPE} from "../../utils/enumActionTypes"
 
 const initialState = {
    isLoggedIn: false
@@ -10,7 +11,7 @@ type InitialStateType = typeof initialState
 
 export const authReducer = (state: InitialStateType = initialState, action: ActionsType): InitialStateType => {
    switch (action.type) {
-       case 'login/SET-IS-LOGGED-IN':
+       case ACTIONS_TYPE.SET_ISLOGGEDIN:
            return {...state, isLoggedIn: action.value}
        default:
            return state
@@ -18,7 +19,7 @@ export const authReducer = (state: InitialStateType = initialState, action: Acti
 }
 // actions
 export const setIsLoggedInAC = (value: boolean) =>
-   ({type: 'login/SET-IS-LOGGED-IN', value} as const)
+   ({type: ACTIONS_TYPE.SET_ISLOGGEDIN, value} as const)
 
 // thunks
 export const loginTC = (data: LoginParamsType) => (dispatch: Dispatch<ActionsType>) => {
