@@ -2,6 +2,7 @@ import {AuthAPI} from "../api/todolist-api"
 import { Dispatch } from "redux"
 import {setIsLoggedInAC} from "../features/login/authReducer"
 import {ACTIONS_TYPE} from "../utils/enumActionTypes"
+import { handleServerAppError,  handleServerNetworkError} from "../utils/errorUtils"
 
 const initialState: InitialStateType = {
    status: 'loading',
@@ -25,14 +26,20 @@ export const setStatusAC = (status: RequestStatusType) => ({ type: ACTIONS_TYPE.
 export const setErrorAC = (error: string | null) => ({ type: ACTIONS_TYPE.SET_ERROR, error } as const)
 export const setInitializedAC = (isInitialized: boolean) => ({ type: ACTIONS_TYPE.SET_INITIALIZED, isInitialized } as const)
 
-export const initializeAppTC = () => (dispatch: Dispatch) => {
-    AuthAPI.me().then(res => {
-        if (res.data.resultCode === 0) {
+export const initializeAppTC = () =>
+async (dispatch: Dispatch) => {
+    try {
+        const response = await AuthAPI.me()   
+        if (response.data.resultCode === 0) {
             dispatch(setIsLoggedInAC(true))
         } else {
         }
         dispatch(setInitializedAC(true))
-    })
+    } catch (error) {
+        handleServerNetworkError(error, dispatch)
+    }
+   
+   
 }
 
 //types
@@ -49,3 +56,6 @@ export type SetStatusActionType = ReturnType<typeof setStatusAC>
 export type SetErrorActionType = ReturnType<typeof setErrorAC>
 
 type ActionsType = ReturnType<typeof setInitializedAC> | SetStatusActionType | SetErrorActionType
+
+
+ 

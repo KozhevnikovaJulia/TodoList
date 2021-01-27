@@ -49,63 +49,71 @@ export const updateTaskAC = (taskId: string, bllModel: UpdateBLLTaskModelType, t
 export const setTasksAC = (tasks: Array<TaskType>, todolistId: string) => 
     ({ type: ACTIONS_TYPE.SET_TASKS, tasks, todolistId } as const)
 
+
 // thunks
-export const fetchTasksTS = (todolistId: string) => (dispatch: ThunkDispatch) => {
+export const fetchTasksTS = (todolistId: string) =>
+async (dispatch: ThunkDispatch) => {
+    try {
         dispatch (setStatusAC("loading"))
-    TaskAPI.getTasks(todolistId)
-            .then((res: any) => {
-                dispatch(setTasksAC(res.data.items, todolistId))
-                dispatch (setStatusAC("succeeded"))
-            })
+        const response = await TaskAPI.getTasks(todolistId)            
+                dispatch(setTasksAC(response.data.items, todolistId))
+                dispatch (setStatusAC("succeeded")) 
+    } catch (error) {
+        handleServerNetworkError(error, dispatch)
     }
-export const removeTaskTC = (taskId: string, todolistId: string) => (dispatch: Dispatch<ActionType>) => {
-        TaskAPI.deleteTask(todolistId, taskId)
-            .then((res: any) => {
-                dispatch(removeTaskAC(taskId, todolistId))
-            })
+                
     }
-export const addTaskTC = (title: string, todolistId: string) => (dispatch: ThunkDispatch) => {
-    dispatch (setStatusAC("loading"))
-    TaskAPI.createTask(todolistId, title)
-            .then((res: any) => {                
-                if (res.data.resultCode === 0) {
-                    dispatch(addTaskAC(res.data.data.item))
-                    dispatch (setStatusAC("succeeded"))
-                } else {
-                    handleServerAppError(res.data, dispatch)
-                }                
-            })
-            .catch ((error)=>{
-                handleServerNetworkError(error, dispatch)
-            })
+export const removeTaskTC = (taskId: string, todolistId: string) =>
+async (dispatch: ThunkDispatch) => {
+    try {
+        const response = await TaskAPI.deleteTask(todolistId, taskId)           
+        dispatch(removeTaskAC(taskId, todolistId)) 
+    } catch (error) {
+        handleServerNetworkError(error, dispatch)
+    }              
+    }
+export const addTaskTC = (title: string, todolistId: string) =>
+    async (dispatch: ThunkDispatch) => {
+        try {
+            dispatch(setStatusAC("loading"))
+            const response = await TaskAPI.createTask(todolistId, title)
+
+            if (response.data.resultCode === 0) {
+                dispatch(addTaskAC(response.data.data.item))
+                dispatch(setStatusAC("succeeded"))
+            } else {
+                handleServerAppError(response.data, dispatch)
+            }
+        } catch (error) {
+            handleServerNetworkError(error, dispatch)
+        }
     }
 export const updateTaskTC = (taskId: string, bllModel: UpdateBLLTaskModelType, todolistId: string) =>
-    (dispatch: ThunkDispatch , getState: () => AppRootStateType) => {
-        const allTasksFromState = getState().tasks;
-        const tasksForCurrentTodolist = allTasksFromState[todolistId]
-        const task = tasksForCurrentTodolist.find(t => t.id === taskId)
-        if (task) {
-            const apiModel: UpdateTaskModelType = {
-                title: task.title,
-                description: task.description,
-                status: task.status,
-                priority: task.priority,
-                startDate: task.startDate,
-                deadline: task.deadline,
-                ...bllModel
+async (dispatch: ThunkDispatch , getState: () => AppRootStateType) => {
+        try {
+            const allTasksFromState = getState().tasks;
+            const tasksForCurrentTodolist = allTasksFromState[todolistId]
+            const task = tasksForCurrentTodolist.find(t => t.id === taskId)
+            if (task) {
+                const apiModel: UpdateTaskModelType = {
+                    title: task.title,
+                    description: task.description,
+                    status: task.status,
+                    priority: task.priority,
+                    startDate: task.startDate,
+                    deadline: task.deadline,
+                    ...bllModel
+                }
+                const response = await TaskAPI.updateTask(todolistId, taskId, apiModel)
+
+                if (response.data.resultCode === 0) {
+                    dispatch(updateTaskAC(taskId, bllModel, todolistId))
+                } else {
+                    handleServerAppError(response.data, dispatch)
+                }
             }
-            TaskAPI.updateTask(todolistId, taskId, apiModel)
-                .then((res: any) => {
-                    if (res.data.resultCode === 0){
-                        dispatch(updateTaskAC(taskId, bllModel, todolistId))
-                    } else {
-                        handleServerAppError(res.data, dispatch)
-                    }
-                   
-                })
-                .catch ((error)=>{
-                    handleServerNetworkError(error, dispatch)
-                })
+        } catch (error) {
+            handleServerNetworkError(error, dispatch)
         }
     }
 
