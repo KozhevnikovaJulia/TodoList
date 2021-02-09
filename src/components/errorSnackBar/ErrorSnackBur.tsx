@@ -21,7 +21,7 @@ let isOpen = error !== null
         if (reason === 'clickaway') {
             return;
         }
-        dispatch(setErrorAC(null))
+        dispatch(setErrorAC({error:null}))
     };
 
   return (    

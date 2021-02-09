@@ -1,18 +1,18 @@
 import {ResponseType} from "../api/todolist-api"
 import { Dispatch } from "redux"
-import {setStatusAC, setErrorAC, SetErrorActionType, SetStatusActionType} from "../app/appReducer"
+import {setStatusAC, setErrorAC} from "../app/appReducer"
 
- export const handleServerAppError = <D> (data: ResponseType<D>, dispatch: Dispatch <SetStatusActionType | SetErrorActionType>) => {
+ export const handleServerAppError = <D> (data: ResponseType<D>, dispatch: Dispatch) => {
     if (data.messages.length) {
-        dispatch(setErrorAC(data.messages[0]))
+        dispatch(setErrorAC({error:data.messages[0]}))
     } else {
-        dispatch(setErrorAC("Some error occurred"))
+        dispatch(setErrorAC({error:"Some error occurred"}))
     }
-    dispatch (setStatusAC("failed"))
+    dispatch (setStatusAC({status:"failed"}))
 }                
   
 
- export const handleServerNetworkError = (error: any, dispatch: Dispatch <SetStatusActionType | SetErrorActionType>) => {
+ export const handleServerNetworkError = (error: any, dispatch: Dispatch) => {
     dispatch(setErrorAC(error.message ? error.message : "Some error"))
-    dispatch (setStatusAC("failed"))
+    dispatch (setStatusAC({status:"failed"}))
  }

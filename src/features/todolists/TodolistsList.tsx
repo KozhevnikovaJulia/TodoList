@@ -48,8 +48,8 @@ export function TodolistsList({demo = false}: TodolistsListPropsType) {
         const thunk = removeTaskTC (id, todolistID)
         dispatch(thunk)
     }, [])
-    const changeFilter = useCallback ((value: FilterValuesType, TodolistID:string) => {
-        let action = changeTodolistFilterAC (value, TodolistID)
+    const changeFilter = useCallback ((value: FilterValuesType, todolistID:string) => {
+        let action = changeTodolistFilterAC ({filter:value, todolistId:todolistID})
         dispatch(action)
         }, [dispatch])    
     const removeTodolist = useCallback((todolistID: string) => { 
