@@ -66,7 +66,7 @@ type AppPropsType = {
                     <Route exact path={"/"} render={() => <TodolistsList demo={demo} />} />
                     <Route path={"/login"} render={() => <Login />} />
                     <Route path={ "/404" } render={ () => <h1>404: PAGE NOT FOUND</h1> }/>
-                    <Redirect from= {"*"} to= {"/404"}> </Redirect>
+                    <Redirect from= {"*"} to= {"/"}> </Redirect>
                     </Switch>
                 </Container>
 
