@@ -16,7 +16,7 @@ beforeEach (() => {
     ]
 })
 
-test('correct todolist should be removed', () => {
+test('correct todolist should be removed', () => {   
    const endState = todolistsReducer(startState, removeTodolistAC ({todolistId:todolistId1}))
 
    expect(endState.length).toBe(1)
@@ -24,14 +24,14 @@ test('correct todolist should be removed', () => {
 })
 
 test('correct todolist should be added', () => {
-     let newTodolistTitle = "New Todolist"
+     let newTodolist = {id:"any id", title: "New todolist", addedDate: "", order: 0}
  
     const endState = todolistsReducer(startState, addTodolistAC (
-       {todolist:{id: todolistId2, title: newTodolistTitle, addedDate: "", order: 0}}
+       {todolist:newTodolist}
        ))
  
     expect(endState.length).toBe(3)
-    expect(endState[2].title).toBe(newTodolistTitle)
+    expect(endState[0].title).toBe("New todolist")
  })
 
  test('correct todolist should change its name', () => {

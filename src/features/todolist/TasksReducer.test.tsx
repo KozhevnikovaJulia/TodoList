@@ -161,6 +161,5 @@ test('correct task should be added to correct array', () => {
     }, action)
   
     expect(endTasksState["todolistId2"].length).toBe(0); 
-    expect(endTasksState["todolistId1"].length).toBe(3); 
  });
 
